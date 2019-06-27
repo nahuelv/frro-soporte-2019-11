@@ -7,6 +7,7 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
+
 import sqlite3
 
 def conexion ():
