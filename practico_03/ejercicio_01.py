@@ -7,36 +7,38 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
-Base = declarative_base()
+import sqlite3
 
-class Persona(Base):
- __tablename__ = 'persona'
-
- idPersona = Column(Integer, primary_key=True)
- nombre = Column(String(30), nullable=False)
- fechaNacimiento = Column(datetime())
- dni = Column(Integer)
- altura = Column(Integer)
-
-
-engine = create_engine('sqlite:///c://Users//Nahuel//Desktop//sqlalchemy_db.db')
-Base.metadata.bind = engine
-
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
+def conexion ():
+    db = sqlite3.connect('C:\\Users\\Nahuel\\Desktop\\db_python.db')
+    return db
 
 def crear_tabla():
-    Base.metadata.create_all(engine)
-    pass
+    con = conexion()
+    c = con.cursor()
 
+    c.execute("""CREATE TABLE IF NOT EXISTS "Persona"(
+                            idPersona INTEGER PRIMARY KEY AUTOINCREMENT ,
+                            nombre char(30),
+                            fechaNacimiento DATETIME,
+                            dni int,
+                            altura int
+                        );""")
+    c.close()
+    con.commit()
+    con.close()
 
 def borrar_tabla():
+    con = conexion()
+    c = con.cursor()
+
+    c.execute("DROP TABLE Persona")
+
+    c.close()
+    con.commit()
+    con.close()
+
     pass
 
 
@@ -46,4 +48,5 @@ def reset_tabla(func):
         crear_tabla()
         func()
         borrar_tabla()
+
     return func_wrapper
