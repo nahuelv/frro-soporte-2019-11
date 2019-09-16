@@ -43,6 +43,7 @@ class DatosSocio(object):
             return False
 
     def alta(self, socio):
+        print("socio agregado", socio.nombre)
         self.session.add(socio)
         self.session.commit()
         return socio
